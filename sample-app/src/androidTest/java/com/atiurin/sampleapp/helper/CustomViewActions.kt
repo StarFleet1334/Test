@@ -9,6 +9,7 @@ import android.widget.*
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.TextView
+import androidx.annotation.IdRes
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.*
@@ -17,6 +18,7 @@ import androidx.test.espresso.action.*
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.contrib.ViewPagerActions
 import androidx.test.espresso.core.internal.deps.guava.base.Predicate
 import androidx.test.espresso.core.internal.deps.guava.collect.Iterables
@@ -24,10 +26,17 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.espresso.util.HumanReadables
 import androidx.test.espresso.util.TreeIterables
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
-import androidx.test.uiautomator.UiObject
+import com.atiurin.sampleapp.pages.UIMenuModelPage
 import org.hamcrest.*
 import org.hamcrest.Matchers.anyOf
 import java.util.concurrent.TimeoutException
+import androidx.test.espresso.NoMatchingViewException
+import androidx.test.espresso.PerformException
+import com.atiurin.sampleapp.R
+import org.hamcrest.CoreMatchers
+import org.hamcrest.Matcher
+import org.hamcrest.Matchers
+
 
 
 /**
@@ -645,3 +654,52 @@ fun withViewCount(viewMatcher: Matcher<View>, expectedCount: Int): Matcher<View?
 private fun withMatcherPredicate(matcher: Matcher<View>): Predicate<View?> {
     return Predicate<View?> { view -> matcher.matches(view) }
 }
+
+fun markCornerCircles() {
+    UIMenuModelPage.top_left_checkBox.tap()
+    UIMenuModelPage.top_center_checkBox.tap()
+    UIMenuModelPage.top_right_checkBox.tap()
+    UIMenuModelPage.center_left_checkBox.tap()
+    UIMenuModelPage.center_right_checkBox.tap()
+    UIMenuModelPage.bottom_left_checkBox.tap()
+    UIMenuModelPage.bottom_center_checkBox.tap()
+    UIMenuModelPage.bottom_right_checkBox.tap()
+}
+
+fun validateMarkedCornerCircles() {
+    UIMenuModelPage.top_left_checkBox.isChecked()
+    UIMenuModelPage.top_center_checkBox.isChecked()
+    UIMenuModelPage.top_right_checkBox.isChecked()
+    UIMenuModelPage.center_left_checkBox.isChecked()
+    UIMenuModelPage.center_right_checkBox.isChecked()
+    UIMenuModelPage.bottom_left_checkBox.isChecked()
+    UIMenuModelPage.bottom_center_checkBox.isChecked()
+    UIMenuModelPage.bottom_right_checkBox.isChecked()
+}
+
+fun getMatcherForView(@IdRes viewId: Int): Matcher<View> {
+    return Matchers.allOf(withId(viewId), isDisplayed())
+}
+
+// Message in chat
+fun checkMessageInRecyclerView(message: String): Boolean {
+    return try {
+        onView(withId(R.id.messages_list))
+            .perform(
+                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                    hasDescendant(withText(message))
+                )
+            )
+            .check(matches(hasDescendant(withText(message))))
+        true // If the actions and checks are passed, return true.
+    } catch (e: NoMatchingViewException) {
+        false // The view was not found in the current view hierarchy.
+    } catch (e: PerformException) {
+        false // The scrollTo action couldn't be performed.
+    } catch (e: AssertionError) {
+        false // The check didn't pass.
+    }
+}
+
+
+
