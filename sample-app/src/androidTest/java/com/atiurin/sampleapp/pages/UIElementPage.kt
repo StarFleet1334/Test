@@ -9,7 +9,7 @@ import org.hamcrest.Matchers
 import org.hamcrest.Matchers.containsString
 import org.hamcrest.Matchers.instanceOf
 
-object UIElementPage {
+object  UIElementPage {
 
     val radioBtnInvisible: Matcher<View> by lazy { withId(R.id.invisible) }
     val radioBtnVisible: Matcher<View> by lazy { withText("VISIBLE") }
