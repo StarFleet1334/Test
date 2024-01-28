@@ -37,8 +37,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArguments["FRIEND_NAME"] = "Chandler Bing"
-        testInstrumentationRunnerArguments["TEXT_MESSAGE"] = "Hello Chandler"
     }
     buildTypes {
         release {
