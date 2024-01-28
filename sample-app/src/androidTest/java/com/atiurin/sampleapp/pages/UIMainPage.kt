@@ -15,6 +15,5 @@ object UIMainPage {
 
     fun openChatWithFriend(text: String): Matcher<View> {
         return Matchers.allOf(withId(R.id.tv_name), withText(text))
-
     }
 }
