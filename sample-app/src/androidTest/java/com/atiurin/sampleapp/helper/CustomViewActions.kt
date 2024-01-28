@@ -38,7 +38,6 @@ import org.hamcrest.Matcher
 import org.hamcrest.Matchers
 
 
-
 /**
  * Wait for view to be visible
  */
@@ -213,7 +212,9 @@ fun Matcher<View>.editTextIsVisible(timeOutIfNotExitInSec: Int = 3): Boolean {
             if (tv.transformationMethod == null) {
                 isVisible = true
                 // if transformation method doesn't contain password text is visible (could be changed by else only)
-            } else if (!tv.transformationMethod.toString().contains("Password") && !tv.transformationMethod.toString().contains("password")) {
+            } else if (!tv.transformationMethod.toString().contains("Password") && !tv.transformationMethod.toString()
+                    .contains("password")
+            ) {
                 isVisible = true
             }
         }
@@ -533,10 +534,14 @@ enum class Direction {
 // custom scroll
 val customScrollTo: ViewAction = object : ViewAction {
     override fun getConstraints(): Matcher<View> {
-        return CoreMatchers.allOf(withEffectiveVisibility(Visibility.VISIBLE), isDescendantOfA(anyOf(
-            isAssignableFrom(ScrollView::class.java),
-            isAssignableFrom(HorizontalScrollView::class.java),
-            isAssignableFrom(NestedScrollView::class.java)))
+        return CoreMatchers.allOf(
+            withEffectiveVisibility(Visibility.VISIBLE), isDescendantOfA(
+                anyOf(
+                    isAssignableFrom(ScrollView::class.java),
+                    isAssignableFrom(HorizontalScrollView::class.java),
+                    isAssignableFrom(NestedScrollView::class.java)
+                )
+            )
         )
     }
 
@@ -627,7 +632,10 @@ fun Matcher<View>.getItemsCountFromRecyclerView(): Int {
 }
 
 fun staticWait(timeOut: Int = 3) {
-    try { Thread.sleep((timeOut * 1000).toLong()) } catch (_: InterruptedException) {}
+    try {
+        Thread.sleep((timeOut * 1000).toLong())
+    } catch (_: InterruptedException) {
+    }
 }
 
 fun withViewCount(viewMatcher: Matcher<View>, expectedCount: Int): Matcher<View?>? {

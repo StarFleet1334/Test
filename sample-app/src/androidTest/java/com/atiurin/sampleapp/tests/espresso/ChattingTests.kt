@@ -6,7 +6,6 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.platform.app.InstrumentationRegistry
 import com.atiurin.sampleapp.activity.MainActivity
 import com.atiurin.sampleapp.helper.*
 import com.atiurin.sampleapp.pages.UIElementPage
@@ -20,7 +19,6 @@ import com.atiurin.sampleapp.pages.UIMessagePage.sendButton
 import com.atiurin.sampleapp.pages.UIMessagePage.toolBarTitle
 import com.atiurin.sampleapp.tests.BaseTest
 import com.atiurin.ultron.extensions.tap
-import io.github.cdimascio.dotenv.Dotenv
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -44,7 +42,7 @@ class ChattingTests : BaseTest() {
         val editor = context.getSharedPreferences("test", Context.MODE_PRIVATE).edit()
 
         // Put the test values
-        editor.putString("FRIEND_NAME", "Chandler Bing")
+        editor.putString("FRIEND_NAME", "Emmet Brown")
         editor.putString("TEXT_MESSAGE", "Hello Chandler")
 
         // Apply the changes
@@ -64,6 +62,7 @@ class ChattingTests : BaseTest() {
         }
     }
 
+
     @Test
     fun firstTest() {
         with(UIElementPage) {
@@ -80,7 +79,7 @@ class ChattingTests : BaseTest() {
             if (friend != null) {
                 openChatWithFriend(friend)
             }
-            // Open Chat with User
+            // Open Chat with User ( Does not do scroll functionality)
             if (friend != null) {
                 openChatWithFriend(friend).tap()
             }
